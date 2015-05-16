@@ -17,8 +17,8 @@ import se.emilsjolander.sprinkles.Transaction;
  * Description:
  */
 public class SprinklesTester {
-    public static void testSprinklesAddressItems(Context context) {
-        SQLiteOpenHelper openHelper = new SQLiteOpenHelper(context, "sprinkles.db", null, 2) {
+    public static void testSprinklesAddressItems(MainActivity mainActivity) {
+        SQLiteOpenHelper openHelper = new SQLiteOpenHelper(mainActivity, "sprinkles.db", null, 2) {
             @Override
             public void onCreate(SQLiteDatabase db) {
             }
@@ -50,11 +50,11 @@ public class SprinklesTester {
         } finally {
             transaction.finish();
         }
-        MainActivity.logTime(startTime, "Sprinkles");
+        mainActivity.logTime(startTime, "Sprinkles Save");
 
         startTime = System.currentTimeMillis();
         sprinkleModels = Query.all(AddressItem.class).get().asList();
-        MainActivity.logTime(startTime, "Sprinkles Load");
+        mainActivity.logTime(startTime, "Sprinkles Load");
 
         deleteSprinklesTables(openHelper, "AddressItem");
     }

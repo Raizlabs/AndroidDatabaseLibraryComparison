@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class SugarTester {
 
-    public static void testSugarAddressBooks() {
+    public static void testSugarAddressBooks(MainActivity mainActivity) {
         AddressItem.deleteAll(AddressItem.class);
         AddressBook.deleteAll(AddressBook.class);
         Contact.deleteAll(Contact.class);
@@ -29,29 +29,29 @@ public class SugarTester {
                 Saver.saveAll(finalAddressBooks);
             }
         });
-        MainActivity.logTime(startTime, "Sugar save addresses");
+        mainActivity.logTime(startTime, "Sugar Save");
 
         startTime = System.currentTimeMillis();
         addressBooks = AddressBook.listAll(AddressBook.class);
         Loader.loadAllInnerData(addressBooks);
-        MainActivity.logTime(startTime, "Sugar load addresses");
+        mainActivity.logTime(startTime, "Sugar Load");
 
         AddressItem.deleteAll(AddressItem.class);
         AddressBook.deleteAll(AddressBook.class);
         Contact.deleteAll(Contact.class);
     }
 
-    public static void testSugarAddressItems() {
+    public static void testSugarAddressItems(MainActivity mainActivity) {
         SimpleAddressItem.deleteAll(SimpleAddressItem.class);
 
         List<SimpleAddressItem> sugarModelList = Generator.getAddresses(SimpleAddressItem.class, MainActivity.LOOP_COUNT);
         long startTime = System.currentTimeMillis();
         SimpleAddressItem.saveInTx(sugarModelList);
-        MainActivity.logTime(startTime, "Sugar");
+        mainActivity.logTime(startTime, "Sugar Save");
 
         startTime = System.currentTimeMillis();
         sugarModelList = SimpleAddressItem.listAll(SimpleAddressItem.class);
-        MainActivity.logTime(startTime, "Sugar load");
+        mainActivity.logTime(startTime, "Sugar Load");
 
         SimpleAddressItem.deleteAll(SimpleAddressItem.class);
     }

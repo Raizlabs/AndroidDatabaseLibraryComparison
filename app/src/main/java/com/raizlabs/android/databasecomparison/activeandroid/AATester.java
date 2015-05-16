@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class AATester {
 
-    public static void testAAAddressBooks() {
+    public static void testAAAddressBooks(MainActivity mainActivity) {
         new Delete().from(AddressItem.class).execute();
         new Delete().from(Contact.class).execute();
         new Delete().from(AddressBook.class).execute();
@@ -34,19 +34,19 @@ public class AATester {
                 Saver.saveAll(finalAddressBooks);
             }
         });
-        MainActivity.logTime(startTime, "AA save addresses");
+        mainActivity.logTime(startTime, "ActiveAndroid Save");
 
         startTime = System.currentTimeMillis();
         addressBooks = new Select().from(AddressBook.class).execute();
         Loader.loadAllInnerData(addressBooks);
-        MainActivity.logTime(startTime, "AA load addresses");
+        mainActivity.logTime(startTime, "ActiveAndroid Load");
 
         new Delete().from(AddressItem.class).execute();
         new Delete().from(Contact.class).execute();
         new Delete().from(AddressBook.class).execute();
     }
 
-    public static void testAAAddressItems() {
+    public static void testAAAddressItems(MainActivity mainActivity) {
         new Delete().from(SimpleAddressItem.class).execute();
 
         final List<SimpleAddressItem> activeAndroidModels =
@@ -60,12 +60,12 @@ public class AATester {
                 Saver.saveAll(activeAndroidModels);
             }
         });
-        MainActivity.logTime(startTime, "Active android");
+        mainActivity.logTime(startTime, "ActiveAndroid Save");
 
         startTime = System.currentTimeMillis();
         List<SimpleAddressItem> activeAndroidModelLoad =
                 new Select().from(SimpleAddressItem.class).execute();
-        MainActivity.logTime(startTime, "AA load");
+        mainActivity.logTime(startTime, "ActiveAndroid Load");
 
         new Delete().from(SimpleAddressItem.class).execute();
     }

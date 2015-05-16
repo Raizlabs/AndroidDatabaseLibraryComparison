@@ -18,8 +18,8 @@ import java.util.List;
  */
 public class GreenDaoTester {
 
-    public static void testAddressItems(Context context) {
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "notes-db", null);
+    public static void testAddressItems(MainActivity mainActivity) {
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mainActivity, "notes-db", null);
         DaoMaster daoMaster = new DaoMaster(helper.getWritableDatabase());
         DaoSession daoSession = daoMaster.newSession();
         final SimpleAddressItemDao simpleAddressItemDao = daoSession.getSimpleAddressItemDao();
@@ -29,18 +29,18 @@ public class GreenDaoTester {
 
         long startTime = System.currentTimeMillis();
         simpleAddressItemDao.insertOrReplaceInTx(addressItemList);
-        MainActivity.logTime(startTime, "GreenDao save addresses items");
+        mainActivity.logTime(startTime, "GreenDao Save");
 
         startTime = System.currentTimeMillis();
         simpleAddressItemDao.loadAll();
-        MainActivity.logTime(startTime, "GreenDao load address items");
+        mainActivity.logTime(startTime, "GreenDao Load");
 
         simpleAddressItemDao.deleteAll();
 
     }
 
-    public static void testAddressBooks(Context context) {
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "notes-db", null);
+    public static void testAddressBooks(MainActivity mainActivity) {
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mainActivity, "notes-db", null);
         DaoMaster daoMaster = new DaoMaster(helper.getWritableDatabase());
         DaoSession daoSession = daoMaster.newSession();
         AddressBookDao addressBookDao = daoSession.getAddressBookDao();
@@ -56,7 +56,7 @@ public class GreenDaoTester {
             daoSession.getContactDao().insertInTx(addressBook.getContactList());
             daoSession.getAddressItemDao().insertInTx(addressBook.getAddressItemList());
         }
-        MainActivity.logTime(startTime, "greenDAO save addresses");
+        mainActivity.logTime(startTime, "GreenDAO Save");
 
         startTime = System.currentTimeMillis();
         addressBooks = addressBookDao.loadAll();
@@ -67,7 +67,7 @@ public class GreenDaoTester {
                 contact.getAddressBook();
             }
         }
-        MainActivity.logTime(startTime, "greenDAO load addresses");
+        mainActivity.logTime(startTime, "GreenDAO Load");
 
         addressBookDao.deleteAll();
         daoSession.getAddressItemDao().deleteAll();
