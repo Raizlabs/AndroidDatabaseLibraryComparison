@@ -3,12 +3,11 @@ package com.raizlabs.android.databasecomparison.dbflow;
 import android.content.Context;
 
 import com.raizlabs.android.databasecomparison.Generator;
-import com.raizlabs.android.databasecomparison.Loader;
 import com.raizlabs.android.databasecomparison.MainActivity;
-import com.raizlabs.android.databasecomparison.Saver;
 import com.raizlabs.android.databasecomparison.events.LogTestDataEvent;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.Delete;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
@@ -37,14 +36,16 @@ public class DBFlowTester {
                 .executeTransaction(new ITransaction() {
                     @Override
                     public void execute(DatabaseWrapper databaseWrapper) {
-                        Saver.saveAll(finalAddressBooks);
+                        for (AddressBook addressBook : finalAddressBooks) {
+                            addressBook.insert();
+                        }
                     }
                 });
         EventBus.getDefault().post(new LogTestDataEvent(startTime, FRAMEWORK_NAME, MainActivity.SAVE_TIME));
 
         startTime = System.currentTimeMillis();
-        addressBooks = new Select().from(AddressBook.class).queryList();
-        Loader.loadAllInnerData(addressBooks);
+        addressBooks = SQLite.select().from(AddressBook.class).queryList();
+
         EventBus.getDefault().post(new LogTestDataEvent(startTime, FRAMEWORK_NAME, MainActivity.LOAD_TIME));
 
 

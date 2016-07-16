@@ -4,6 +4,7 @@ import com.raizlabs.android.databasecomparison.MainActivity;
 import com.raizlabs.android.databasecomparison.interfaces.IAddressBook;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ModelContainer;
+import com.raizlabs.android.dbflow.annotation.OneToMany;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -15,7 +16,6 @@ import java.util.Collection;
  * Description:
  */
 @Table(name = "AddressBook", database = DBFlowDatabase.class,
-        cachingEnabled = true,
         cacheSize = MainActivity.ADDRESS_BOOK_COUNT,
         orderedCursorLookUp = true)
 @ModelContainer
@@ -52,6 +52,7 @@ public class AddressBook extends BaseModel implements IAddressBook<AddressItem, 
         this.addresses = addresses;
     }
 
+    @OneToMany(methods = OneToMany.Method.ALL)
     public Collection<AddressItem> getAddresses() {
         if (addresses == null) {
             addresses = SQLite.select().from(AddressItem.class)
@@ -60,6 +61,7 @@ public class AddressBook extends BaseModel implements IAddressBook<AddressItem, 
         return addresses;
     }
 
+    @OneToMany(methods = OneToMany.Method.ALL)
     public Collection<Contact> getContacts() {
         if (contacts == null) {
             contacts = SQLite.select().from(Contact.class)
