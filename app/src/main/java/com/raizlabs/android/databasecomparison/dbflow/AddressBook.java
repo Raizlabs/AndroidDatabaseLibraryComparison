@@ -1,23 +1,24 @@
 package com.raizlabs.android.databasecomparison.dbflow;
 
-import com.raizlabs.android.databasecomparison.interfaces.IAddressBook;
 import com.raizlabs.android.databasecomparison.MainActivity;
+import com.raizlabs.android.databasecomparison.interfaces.IAddressBook;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ModelContainer;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
-import com.raizlabs.android.dbflow.sql.language.Select;
-import com.raizlabs.android.dbflow.structure.cache.BaseCacheableModel;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.util.Collection;
 
 /**
  * Description:
  */
-@Table(tableName = "AddressBook", databaseName = DBFlowDatabase.NAME)
+@Table(name = "AddressBook", database = DBFlowDatabase.class,
+        cachingEnabled = true,
+        cacheSize = MainActivity.ADDRESS_BOOK_COUNT)
 @ModelContainer
-public class AddressBook extends BaseCacheableModel implements IAddressBook<AddressItem, Contact> {
+public class AddressBook extends BaseModel implements IAddressBook<AddressItem, Contact> {
 
     @PrimaryKey(autoincrement = true)
     @Column
@@ -52,14 +53,16 @@ public class AddressBook extends BaseCacheableModel implements IAddressBook<Addr
 
     public Collection<AddressItem> getAddresses() {
         if (addresses == null) {
-            addresses = new Select().from(AddressItem.class).where(Condition.column(AddressItem$Table.ADDRESSBOOK_ADDRESSBOOK).is(id)).queryList();
+            addresses = SQLite.select().from(AddressItem.class)
+                    .where(AddressItem_Table.addressBook.is(id)).queryList();
         }
         return addresses;
     }
 
     public Collection<Contact> getContacts() {
         if (contacts == null) {
-            contacts = new Select().from(Contact.class).where(Condition.column(Contact$Table.ADDRESSBOOK_ADDRESSBOOK).is(id)).queryList();
+            contacts = SQLite.select().from(Contact.class)
+                    .where(Contact_Table.addressBook.is(id)).queryList();
         }
         return contacts;
     }
@@ -77,11 +80,6 @@ public class AddressBook extends BaseCacheableModel implements IAddressBook<Addr
         for (Contact contact : contacts) {
             contact.saveAll();
         }
-    }
-
-    @Override
-    public int getCacheSize() {
-        return MainActivity.ADDRESS_BOOK_COUNT;
     }
 
 }
