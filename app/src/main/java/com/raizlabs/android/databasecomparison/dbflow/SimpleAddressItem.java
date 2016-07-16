@@ -12,7 +12,8 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
  */
 @Table(database = DBFlowDatabase.class,
         cachingEnabled = true,
-        cacheSize = MainActivity.LOOP_COUNT)
+        cacheSize = MainActivity.LOOP_COUNT,
+        orderedCursorLookUp = true)
 public class SimpleAddressItem extends BaseModel implements IAddressItem<AddressBook> {
 
     @PrimaryKey(autoincrement = true)

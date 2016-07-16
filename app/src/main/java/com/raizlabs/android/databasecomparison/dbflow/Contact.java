@@ -13,7 +13,7 @@ import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
 /**
  * Description:
  */
-@Table(name = "contact", database = DBFlowDatabase.class)
+@Table(name = "contact", database = DBFlowDatabase.class, orderedCursorLookUp = true)
 public class Contact extends BaseModel implements IContact<AddressBook> {
 
     @PrimaryKey(autoincrement = true)

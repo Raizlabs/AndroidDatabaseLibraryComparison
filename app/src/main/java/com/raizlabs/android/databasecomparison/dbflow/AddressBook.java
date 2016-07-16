@@ -16,7 +16,8 @@ import java.util.Collection;
  */
 @Table(name = "AddressBook", database = DBFlowDatabase.class,
         cachingEnabled = true,
-        cacheSize = MainActivity.ADDRESS_BOOK_COUNT)
+        cacheSize = MainActivity.ADDRESS_BOOK_COUNT,
+        orderedCursorLookUp = true)
 @ModelContainer
 public class AddressBook extends BaseModel implements IAddressBook<AddressItem, Contact> {
 
