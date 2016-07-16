@@ -8,6 +8,7 @@ import com.raizlabs.android.databasecomparison.activeandroid.AddressBook;
 import com.raizlabs.android.databasecomparison.activeandroid.AddressItem;
 import com.raizlabs.android.databasecomparison.activeandroid.Contact;
 import com.raizlabs.android.databasecomparison.activeandroid.SimpleAddressItem;
+import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 import io.realm.Realm;
@@ -38,7 +39,7 @@ public class MainApplication extends SugarApp {
                 .setLogLevel(Ollie.LogLevel.FULL)
                 .init();
 
-        FlowManager.init(this);
+        FlowManager.init(new FlowConfig.Builder(this).build());
 
         Sprinkles.init(this, "sprinkles.db", 2);
 

@@ -6,20 +6,17 @@ import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Description:
  */
-@Table(tableName = "contact", databaseName = DBFlowDatabase.NAME)
+@Table(name = "contact", database = DBFlowDatabase.class, orderedCursorLookUp = true)
 public class Contact extends BaseModel implements IContact<AddressBook> {
 
     @PrimaryKey(autoincrement = true)
-    @Column
     long id;
 
     @Column(name = "name")
@@ -28,10 +25,11 @@ public class Contact extends BaseModel implements IContact<AddressBook> {
     @Column(name = "email")
     String email;
 
-    @ForeignKey(references = {@ForeignKeyReference(columnName = "addressBook",
-                                                   foreignColumnName = "id", columnType = long.class)},
-                saveForeignKeyModel = false)
-    @Column
+    @ForeignKey(references =
+            {@ForeignKeyReference(columnName = "addressBook",
+                    foreignKeyColumnName = "id",
+                    columnType = long.class)},
+            saveForeignKeyModel = false)
     ForeignKeyContainer<AddressBook> addressBook;
 
     @Override
@@ -61,11 +59,8 @@ public class Contact extends BaseModel implements IContact<AddressBook> {
 
     @Override
     public void setAddressBook(AddressBook addressBook) {
-        this.addressBook = new ForeignKeyContainer<>(AddressBook.class);
-        Map<String, Object> keys = new LinkedHashMap<>();
-        keys.put(AddressBook$Table.ID, addressBook.id);
-        this.addressBook.setData(keys);
-        this.addressBook.setModel(addressBook);
+        this.addressBook = FlowManager.getContainerAdapter(AddressBook.class)
+                .toForeignKeyContainer(addressBook);
     }
 
     @Override

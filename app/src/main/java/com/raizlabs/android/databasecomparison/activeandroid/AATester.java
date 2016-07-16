@@ -1,6 +1,7 @@
 package com.raizlabs.android.databasecomparison.activeandroid;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
@@ -10,7 +11,6 @@ import com.raizlabs.android.databasecomparison.Loader;
 import com.raizlabs.android.databasecomparison.MainActivity;
 import com.raizlabs.android.databasecomparison.Saver;
 import com.raizlabs.android.databasecomparison.events.LogTestDataEvent;
-import com.raizlabs.android.dbflow.runtime.TransactionManager;
 
 import java.util.Collection;
 
@@ -34,12 +34,15 @@ public class AATester {
                         MainActivity.ADDRESS_BOOK_COUNT);
         long startTime = System.currentTimeMillis();
         final Collection<AddressBook> finalAddressBooks = addressBooks;
-        TransactionManager.transact(ActiveAndroid.getDatabase(), new Runnable() {
-            @Override
-            public void run() {
-                Saver.saveAll(finalAddressBooks);
-            }
-        });
+        SQLiteDatabase database = ActiveAndroid.getDatabase();
+        database.beginTransaction();
+        try {
+            Saver.saveAll(finalAddressBooks);
+            database.setTransactionSuccessful();
+        } finally {
+            database.endTransaction();
+        }
+
         EventBus.getDefault().post(new LogTestDataEvent(startTime, FRAMEWORK_NAME, MainActivity.SAVE_TIME));
 
         startTime = System.currentTimeMillis();
@@ -59,13 +62,14 @@ public class AATester {
                 Generator.getAddresses(SimpleAddressItem.class, MainActivity.LOOP_COUNT);
 
         long startTime = System.currentTimeMillis();
-        // Reuse method so we don't have to write
-        TransactionManager.transact(ActiveAndroid.getDatabase(), new Runnable() {
-            @Override
-            public void run() {
-                Saver.saveAll(activeAndroidModels);
-            }
-        });
+        SQLiteDatabase database = ActiveAndroid.getDatabase();
+        database.beginTransaction();
+        try {
+            Saver.saveAll(activeAndroidModels);
+            database.setTransactionSuccessful();
+        } finally {
+            database.endTransaction();
+        }
         EventBus.getDefault().post(new LogTestDataEvent(startTime, FRAMEWORK_NAME, MainActivity.SAVE_TIME));
 
         startTime = System.currentTimeMillis();
