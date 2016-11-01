@@ -31,11 +31,7 @@ public class RealmTester {
         long startTime = System.currentTimeMillis();
         final Collection<AddressBook> finalAddressBooks = addressBooks;
         realm.beginTransaction();
-        for (AddressBook book : finalAddressBooks) {
-            realm.copyToRealmOrUpdate(book.contacts);
-            realm.copyToRealmOrUpdate(book.addresses);
-        }
-        realm.copyToRealmOrUpdate(finalAddressBooks);
+        realm.insertOrUpdate(finalAddressBooks);
         realm.commitTransaction();
         EventBus.getDefault().post(new LogTestDataEvent(startTime, FRAMEWORK_NAME, MainActivity.SAVE_TIME));
 
@@ -62,7 +58,7 @@ public class RealmTester {
         Collection<SimpleAddressItem> modelList = Generator.getAddresses(SimpleAddressItem.class, MainActivity.LOOP_COUNT);
         long startTime = System.currentTimeMillis();
         realm.beginTransaction();
-        realm.copyToRealm(modelList);
+        realm.insertOrUpdate(modelList);
         realm.commitTransaction();
         EventBus.getDefault().post(new LogTestDataEvent(startTime, FRAMEWORK_NAME, MainActivity.SAVE_TIME));
 
