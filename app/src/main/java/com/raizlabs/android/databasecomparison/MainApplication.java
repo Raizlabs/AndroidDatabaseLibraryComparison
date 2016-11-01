@@ -42,8 +42,7 @@ public class MainApplication extends SugarApp {
 
         Sprinkles.init(this, "sprinkles.db", 2);
 
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(this).build();
-        Realm.setDefaultConfiguration(realmConfig);
+        Realm.init(this);
 
         mDatabase = getDatabase();
     }
