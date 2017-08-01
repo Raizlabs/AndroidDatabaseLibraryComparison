@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.raizlabs.android.databasecomparison.activeandroid.AATester;
+import com.raizlabs.android.databasecomparison.aorm.AormTester;
 import com.raizlabs.android.databasecomparison.dbflow.DBFlowTester;
 import com.raizlabs.android.databasecomparison.events.LogTestDataEvent;
 import com.raizlabs.android.databasecomparison.events.TrialCompletedEvent;
@@ -193,6 +194,7 @@ public class MainActivity extends Activity {
         chartEntrySets.put(OrmLiteTester.FRAMEWORK_NAME, new ArrayList<BarEntry>());
         chartEntrySets.put(OllieTester.FRAMEWORK_NAME, new ArrayList<BarEntry>());
         chartEntrySets.put(RealmTester.FRAMEWORK_NAME, new ArrayList<BarEntry>());
+        chartEntrySets.put(AormTester.FRAMEWORK_NAME, new ArrayList<BarEntry>());
         //chartEntrySets.put(SugarTester.FRAMEWORK_NAME, new ArrayList<BarEntry>());
         //chartEntrySets.put(AATester.FRAMEWORK_NAME, new ArrayList<BarEntry>());
         //chartEntrySets.put(SprinklesTester.FRAMEWORK_NAME, new ArrayList<BarEntry>());
@@ -216,6 +218,8 @@ public class MainActivity extends Activity {
                 return Color.rgb(0x64, 0xB5, 0XF6); // blue
             case RealmTester.FRAMEWORK_NAME:
                 return Color.rgb(0xAE, 0xD5, 0X81); // light green
+            case AormTester.FRAMEWORK_NAME:
+                return Color.rgb(0xCC, 0xCC, 0xCC); //gray
             default:
                 return Color.WHITE;
         }
@@ -247,6 +251,7 @@ public class MainActivity extends Activity {
                 DBFlowTester.testAddressItems(applicationContext);
                 OllieTester.testAddressItems(applicationContext);
                 RealmTester.testAddressItems(applicationContext);
+                AormTester.testAddressItems(applicationContext);
                 //SprinklesTester.testAddressItems(applicationContext);
                 //AATester.testAddressItems(applicationContext);
                 //SugarTester.testAddressItems(applicationContext);
@@ -273,6 +278,7 @@ public class MainActivity extends Activity {
                 DBFlowTester.testAddressBooks(applicationContext);
                 OllieTester.testAddressBooks(applicationContext);
                 RealmTester.testAddressBooks(applicationContext);
+                AormTester.testAddressBooks(applicationContext);
                 //SprinklesTester.testAddressBooks(applicationContext);
                 //AATester.testAddressBooks(applicationContext);
                 //SugarTester.testAddressBooks(applicationContext);
