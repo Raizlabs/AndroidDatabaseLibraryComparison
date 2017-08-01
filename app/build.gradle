@@ -4,7 +4,7 @@ apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.raizlabs.android.databasecomparison"
@@ -36,4 +36,5 @@ dependencies {
 
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.0'
     compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'cn.ieclipse.aorm:aorm-core:1.1.5'
 }
